@@ -25,27 +25,12 @@ curl_close($ch);
 $result = array();
 
 if ($request) {
-    $result = json_decode($request, true);
-    // print_r($result);
-    if($result){      
-      if($result['data']){
-        //something came in
-        if($result['data']['status'] == 'success'){
-          // the transaction was successful, you can deliver value          
-          echo "success";
-        }else{
-          // the transaction was not successful, do not deliver value'
-          // print_r($result);  //uncomment this line to inspect the result, to check why it failed.
-          echo "Transaction was not successful: Last gateway response was: ".$result['data']['gateway_response'];
-        }
-      }else{
-        echo $result['message'];
-      }
-    }else{
-      //print_r($result);
-      die("Something went wrong while trying to convert the request variable to json. Uncomment the print_r command to see what is in the result variable.");
-    }
-  }else{
-    //var_dump($request);
-    die("Something went wrong while executing curl. Uncomment the var_dump line above this line to see what the issue is. Please check your CURL command to make sure everything is ok");
-  }
+  $result = json_decode($request, true);
+}
+
+if (array_key_exists('data', $result) && array_key_exists('status', $result['data']) && ($result['data']['status'] === 'success')) {
+  echo "success";
+	//Perform necessary action
+}else{
+  echo "Transaction was unsuccessful";
+}
